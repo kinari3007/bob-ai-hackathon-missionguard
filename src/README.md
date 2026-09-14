@@ -1,47 +1,26 @@
 # Source Code
 
-Place all your project's source code in this folder.
+Phase 1 lives entirely under `src/` as a Python package importable from the repo root (`pytest.ini` sets `pythonpath = .`).
 
-## Structure Guidelines
-
-Organize your code logically. Here are common patterns — use whatever fits
-your project:
-
-### Web Application
 ```
 src/
-  backend/        ← API server code
-  frontend/       ← UI code
-  shared/         ← Shared utilities/types
+  __main__.py              ← python -m src  (fleet summary)
+  data/
+    generate_dataset.py    ← synthetic CSV writer
+    data_loader.py
+    preprocessing.py
+    feature_engineering.py
+  models/
+    risk_model.py          ← logistic + domain blend
+  services/
+    risk_engine.py         ← get_all_assets / get_asset_status / get_failure_risk
+    readiness.py
+    explainability.py
+  utils/
+    config.py              ← paths, seed, thresholds
+    exceptions.py
 ```
 
-### Data / AI Project
-```
-src/
-  data/           ← Data ingestion / preprocessing
-  models/         ← ML model code
-  api/            ← Serving layer
-  notebooks/      ← Jupyter notebooks (exploration)
-```
+See `docs/risk-engine.md` for dataset fields, scoring, and how to run tests.
 
-### CLI / Script-based Tool
-```
-src/
-  cli/            ← CLI entry points
-  lib/            ← Core logic
-  utils/          ← Helpers
-```
-
-## Important Files to Include
-
-- `requirements.txt` or `package.json` — dependency manifest
-- `.env.example` — template for environment variables (NEVER commit `.env`)
-- Any database migration files
-- Configuration files
-
-## What NOT to Include in src/
-
-- `.env` files with real secrets
-- Large binary files (use Git LFS or link externally)
-- `node_modules/` or `venv/` (these are in `.gitignore`)
-- Build artifacts (`dist/`, `build/`, `__pycache__/`)
+Do not put IBM Bob or MCP code in this tree until that phase; keep `.env` out of git.

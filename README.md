@@ -1,121 +1,83 @@
-# 🚀 [Your Project Title Here]
+# MissionGuard AI — Mission Readiness & Predictive Maintenance Copilot
 
-> ⚠️ **Replace everything in `[ ]` brackets with your actual content before submission.**
+Prototype decision-support core for IBM BoB AI Innovation Hackathon 2026, problem **D1**. All telemetry is **synthetic**. This is not operationally validated military software.
 
----
-
-## 👥 Team
+## Team
 
 | Field | Value |
 |---|---|
-| **Team Name** | [Your Team Name] |
-| **Track** | [AI / DevOps / Sustainability / Open] |
-| **Team Lead** | [Name] — [email@ibm.com] |
-| **Members** | [Name 1], [Name 2], [Name 3] |
+| **Team Name** | To be completed before submission |
+| **Track** | AI |
+| **Team Lead** | To be completed before submission |
+| **Members** | To be completed before submission |
 
----
+## Problem Statement
 
-## 🎯 Problem Statement
+Maintainers need a fast way to see which assets are not mission-ready, why they are at risk, and what to service first. Spreadsheets of sensor-like fields do not by themselves produce ranked, explainable actions.
 
-> In 2–3 sentences: What problem does your project solve? Who experiences this problem?
+## Solution
 
-[Describe the real-world problem your project addresses. Be specific about who the user is and what pain point they face.]
+MissionGuard scores a fictional fleet CSV with a hybrid, interpretable risk engine: pandas preprocessing, logistic regression, a domain blend, readiness labels (`READY` / `WARNING` / `NOT_READY`), and human-readable risk factors. Later phases will add IBM Bob / MCP and a UI on top of the Python API already exposed here.
 
----
+## Key Features
 
-## 💡 Solution
+- **Synthetic fleet:** ~100 reproducible assets in `data/assets.csv`
+- **Hybrid risk scores:** health, failure probability, LOW/MEDIUM/HIGH
+- **Readiness layer:** evidence-based READY / WARNING / NOT_READY
+- **Explainability:** top contributing factors and a recommended action per asset
+- **Agent-2 API:** `get_all_assets`, `get_asset_status`, `get_failure_risk`
 
-> In 2–3 sentences: What did you build? How does it solve the problem above?
-
-[Describe your solution clearly. Explain the core mechanism — what makes it work.]
-
----
-
-## ✨ Key Features
-
-- **Feature 1:** [Brief description — e.g., "Real-time anomaly detection using watsonx.ai"]
-- **Feature 2:** [Brief description]
-- **Feature 3:** [Brief description]
-- **Feature 4:** [Optional]
-- **Feature 5:** [Optional]
-
----
-
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Category | Technologies |
 |---|---|
-| **Languages** | [e.g., Python, TypeScript] |
-| **Frameworks** | [e.g., FastAPI, React] |
-| **IBM Technologies** | [e.g., watsonx.ai, IBM Bob, IBM Cloud] |
-| **Databases** | [e.g., PostgreSQL, Redis] |
-| **Other** | [e.g., Docker, GitHub Actions] |
+| **Languages** | Python |
+| **Frameworks** | pandas, NumPy, scikit-learn, pytest |
+| **IBM Technologies** | Not wired in this phase (reserved for later agents) |
+| **Databases** | Local CSV |
+| **Other** | joblib (optional model snapshot) |
 
----
-
-## 📁 Repository Structure
+## Repository Structure
 
 ```
-├── src/                  # All source code
-├── docs/                 # Written documentation
-│   ├── problem-statement.md
-│   ├── solution-overview.md
-│   ├── architecture.md
-│   └── setup-guide.md
-├── demo/                 # Demo artifacts
-│   ├── screenshots/      # App screenshots
-│   └── demo-video-link.txt  # Link to demo video
-├── presentation/         # Slide deck
-└── submission.yaml       # Structured submission metadata
+├── src/                  # Risk engine package
+├── tests/                # pytest suite
+├── data/assets.csv       # Synthetic fleet
+├── docs/                 # Including docs/risk-engine.md
+├── demo/                 # Demo artifacts (later)
+├── presentation/         # Slide deck (later)
+└── submission.yaml       # Hackathon metadata (fill before submit)
 ```
 
----
+## How to Run
 
-## ⚡ How to Run
-
-> **Copy these exact steps from your [`docs/setup-guide.md`](docs/setup-guide.md)**
-
-```bash
-# 1. Clone the repo
-git clone https://github.com/[your-repo].git
-cd [your-repo]
-
-# 2. Install dependencies
-[your install command here]
-
-# 3. Configure environment
-cp .env.example .env
-# Edit .env with your values
-
-# 4. Run the project
-[your run command here]
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python -m src.data.generate_dataset
+python -m src
+python -m pytest
 ```
 
----
+Details: [`docs/setup-guide.md`](docs/setup-guide.md) and [`docs/risk-engine.md`](docs/risk-engine.md).
 
-## 🖥️ Demo
+## Demo
 
 | Artifact | Link |
 |---|---|
-| 📹 Demo Video | [See demo/demo-video-link.txt](demo/demo-video-link.txt) |
-| 🌐 Live Demo | [See demo/live-demo-url.txt](demo/live-demo-url.txt) |
-| 🖼️ Screenshots | [See demo/screenshots/](demo/screenshots/) |
-| 📊 Presentation | [See presentation/slides.pdf](presentation/) |
+| Demo Video | Not recorded yet — see `demo/demo-video-link.txt` |
+| Live Demo | Not deployed — run locally |
+| Screenshots | Later (dashboard agent) |
+| Presentation | Later |
 
----
+## Known Limitations
 
-## ⚠️ Known Limitations
+- Synthetic data only; no real platform telemetry
+- No IBM Bob, MCP, HTTP API, or UI in this phase
+- Logistic regression + heuristic blend, not deep learning
+- Labels are generated, not observed failures
 
-> Be honest — judges appreciate transparency over overclaiming.
+## What We're Most Proud Of
 
-- [Limitation 1: e.g., "Authentication is mocked — not production-ready"]
-- [Limitation 2: e.g., "Only tested on Chrome"]
-- [Limitation 3: e.g., "Feature X is scaffolded but not fully implemented"]
-
----
-
-## 🏅 What We're Most Proud Of
-
-[Tell the judges what part of your submission is strongest and worth paying close attention to.]
-
----
+A small, tested, explainable scoring pipeline that another agent can call as plain Python without re-implementing the model.

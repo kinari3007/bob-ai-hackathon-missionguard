@@ -1,79 +1,82 @@
 # Setup Guide
 
-> **This file is read by the automated evaluation pipeline. Be precise and complete.**
+> Risk-engine phase. No IBM Cloud keys, containers, or frontend are required yet.
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed:
-
-- [ ] [e.g., Python 3.11+]
-- [ ] [e.g., Node.js 18+]
-- [ ] [e.g., Docker Desktop]
-- [ ] [e.g., An IBM Cloud account with watsonx.ai access]
+- [ ] Python 3.11+ (developed with Python 3.14 on Windows)
+- [ ] PowerShell (or Command Prompt) with permission to create `.venv` in the repo
 
 ## Environment Variables
 
-Copy `.env.example` to `.env` and fill in the values:
-
-```bash
-cp .env.example .env
-```
-
-| Variable | Description | Required |
-|---|---|---|
-| `WATSONX_API_KEY` | Your IBM watsonx.ai API key | Yes |
-| `WATSONX_PROJECT_ID` | Your watsonx.ai project ID | Yes |
-| `DATABASE_URL` | PostgreSQL connection string | Yes |
-| `SLACK_WEBHOOK_URL` | Slack webhook for alerts | No |
+This phase does not require secrets. Optional overrides can be copied from `src/.env.example` later when IBM services are wired. For local scoring you can skip `.env`.
 
 ## Installation
 
-```bash
+```powershell
 # 1. Clone the repository
-git clone https://github.com/[your-org]/[your-repo].git
-cd [your-repo]
+git clone <your-fork-url>
+cd bob-ai-hackathon-missionguard
 
-# 2. Install backend dependencies
-[your command — e.g.: pip install -r requirements.txt]
+# 2. Create and activate a virtual environment (do not install globally)
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
 
-# 3. Install frontend dependencies (if applicable)
-[your command — e.g.: cd frontend && npm install]
+# 3. Install this phase's dependencies
+python -m pip install -r requirements.txt
+```
 
-# 4. Set up the database (if applicable)
-[your command — e.g.: python manage.py migrate]
+Command Prompt activation, if you are not using PowerShell:
+
+```bat
+.venv\Scripts\activate
 ```
 
 ## Running the Application
 
-```bash
-# Start the backend
-[your command — e.g.: uvicorn app.main:app --reload]
+```powershell
+# Generate the synthetic fleet CSV (safe to re-run; seed is fixed)
+python -m src.data.generate_dataset
 
-# Start the frontend (in a separate terminal, if applicable)
-[your command — e.g.: cd frontend && npm run dev]
+# Score the fleet and print READY / WARNING / NOT_READY counts
+python -m src
 ```
 
-The application will be available at: `http://localhost:[PORT]`
+You should see total asset count, readiness counts, HIGH-risk count, average health score, and one example high-risk record.
 
 ## Running Tests
 
-```bash
-[your test command — e.g.: pytest tests/ -v]
+```powershell
+python -m pytest
 ```
 
-## Quick Demo (Optional)
+Always run pytest with the virtual environment interpreter:
 
-If you have a demo script or sample data to showcase the project quickly:
+```powershell
+.\.venv\Scripts\python.exe -m pytest
+```
 
-```bash
-[e.g.: python demo/seed_demo_data.py]
-[e.g.: open http://localhost:8000/demo]
+## Quick Demo
+
+```powershell
+python -m src
+```
+
+Then, in a Python REPL with the venv active:
+
+```python
+from src.services.risk_engine import get_failure_risk, get_asset_status
+print(get_asset_status("A-001"))
+print(get_failure_risk("A-001"))
 ```
 
 ## Troubleshooting
 
 | Issue | Solution |
 |---|---|
-| [e.g., `ModuleNotFoundError`] | [e.g., Run `pip install -r requirements.txt` again] |
-| [e.g., Database connection refused] | [e.g., Ensure PostgreSQL is running: `docker compose up db`] |
-| [e.g., watsonx.ai 401 error] | [e.g., Check `WATSONX_API_KEY` in your `.env` file] |
+| `ModuleNotFoundError: pandas` | Activate `.venv` and `pip install -r requirements.txt` |
+| `pytest` not found | Use `.\.venv\Scripts\python.exe -m pytest` |
+| Dataset missing | `python -m src.data.generate_dataset` |
+| Execution policy blocks `Activate.ps1` | Use `.\.venv\Scripts\python.exe` directly instead of activating |
+| Scores look different after editing thresholds | Thresholds live in `src/utils/config.py`; re-run `python -m src` |

@@ -2,40 +2,37 @@
 
 ## What We Built
 
-[Describe your solution in plain language. Avoid jargon — write as if explaining to a smart colleague unfamiliar with your tech stack.]
+A local Python risk engine that reads a synthetic asset CSV, scores each asset, and returns health, failure probability, risk level, readiness, top factors, and a recommended action.
+
+IBM Bob and any UI are **not** part of this phase. They should wrap `src.services.risk_engine`.
 
 ## How It Works
 
-[Explain the core mechanism step by step. A numbered list or simple flow works well here.]
-
-1. [Step 1: e.g., "User connects their GitHub repository via OAuth"]
-2. [Step 2: e.g., "The system ingests pipeline logs and feeds them to watsonx.ai"]
-3. [Step 3: e.g., "An anomaly score is computed and displayed on the dashboard"]
-4. [Step 4: e.g., "Alerts are sent to Slack when the score exceeds a threshold"]
+1. Generate or load `data/assets.csv` (fixed seed).
+2. Validate columns and impute missing values.
+3. Engineer maintenance-gap and stress features.
+4. Fit logistic regression on a noisy synthetic failure label; blend with a domain median/IQR score.
+5. Map probability + health onto `LOW`/`MEDIUM`/`HIGH` and `READY`/`WARNING`/`NOT_READY`.
+6. Convert positive model contributions into short factor phrases.
 
 ## Architecture Diagram
 
-> See [`architecture.md`](architecture.md) for the detailed diagram.
-
-[Optionally include a simple ASCII or Mermaid diagram here for quick reference.]
+> See [`architecture.md`](architecture.md).
 
 ```
-[User] → [Frontend: React] → [API: FastAPI] → [watsonx.ai] → [Dashboard]
-                                    ↓
-                             [PostgreSQL DB]
+CSV → Loader → Preprocess → Features → Hybrid model → Scores + explanations → Python API
 ```
 
 ## Key Design Decisions
 
 | Decision | Rationale |
 |---|---|
-| [e.g., Used watsonx.ai for anomaly detection] | [e.g., Pre-trained models reduced time-to-value vs. building from scratch] |
-| [Decision 2] | [Rationale 2] |
-| [Decision 3] | [Rationale 3] |
+| Synthetic correlated data, not uniform random | Prototype looks like a fleet; model can learn structure |
+| Logistic regression + domain blend | Explainable MVP; avoids a brittle single rule |
+| Thresholds in `config.py` | Readiness rules stay tunable |
+| Python functions, not FastAPI | Agent 2 can add HTTP/MCP without rewriting scoring |
+| Isolated `.venv` | Reproducible installs; no global pip |
 
 ## IBM Technologies Used
 
-[Explain specifically HOW you used each IBM technology — not just that you used it.]
-
-- **[IBM Tech 1, e.g., watsonx.ai]:** [How it was used — e.g., "Used the `ibm/granite-13b-instruct-v2` model via the Python SDK to classify anomaly types from log text."]
-- **[IBM Tech 2]:** [How it was used]
+None in this phase. The scoring API is the intended attachment point for IBM Bob / watsonx later.
