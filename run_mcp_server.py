@@ -8,10 +8,12 @@ Usage:
 
 For IBM Bob configuration, add this to your Bob MCP config:
     {
-        "missionguard": {
-            "command": "python",
-            "args": ["run_mcp_server.py"],
-            "cwd": "/path/to/bob-ai-hackathon-missionguard"
+        "mcpServers": {
+            "missionguard-mcp": {
+                "command": "python",
+                "args": ["run_mcp_server.py"],
+                "cwd": "/absolute/path/to/bob-ai-hackathon-missionguard"
+            }
         }
     }
 """
@@ -20,23 +22,20 @@ import asyncio
 import sys
 from pathlib import Path
 
-# Add src to Python path
-src_path = Path(__file__).parent / "src"
-sys.path.insert(0, str(src_path))
+# Ensure the repository root is on sys.path so that `import src.*` resolves
+# correctly.  Do NOT add the src/ subdirectory itself — that would shadow the
+# installed `mcp` package with src/mcp/ and cause a circular import.
+_repo_root = Path(__file__).resolve().parent
+if str(_repo_root) not in sys.path:
+    sys.path.insert(0, str(_repo_root))
 
 from src.mcp.server import create_mcp_server
-from mcp.server.stdio import stdio_server
 
 
-async def main():
+async def main() -> None:
     """Run the MCP server over stdio transport."""
-    async with stdio_server() as (read_stream, write_stream):
-        mcp = create_mcp_server()
-        await mcp.run(
-            read_stream,
-            write_stream,
-            mcp.create_initialization_options(),
-        )
+    mcp = create_mcp_server()
+    await mcp.run_stdio_async()
 
 
 if __name__ == "__main__":

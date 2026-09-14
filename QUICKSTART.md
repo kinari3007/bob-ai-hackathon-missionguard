@@ -9,13 +9,13 @@
 
 ```powershell
 # Terminal 1: Backend API
-.\.venv\Scripts\python.exe -m uvicorn src.api.main:app --reload --port 8000
+python -m uvicorn src.api.main:app --reload --port 8000
 
 # Terminal 2: Dashboard (in a new terminal)
-.\.venv\Scripts\python.exe -m streamlit run src/dashboard/app.py
+python -m streamlit run src/dashboard/app.py
 
 # Terminal 3: MCP Server (optional, in a new terminal)
-.\.venv\Scripts\python.exe run_mcp_server.py
+python run_mcp_server.py
 ```
 
 **Then:**
@@ -27,20 +27,14 @@
 ## First Time Setup (One-Time, 5 Minutes)
 
 ```powershell
-# 1. Create virtual environment
-python -m venv .venv
+# 1. Install all dependencies (no venv required)
+pip install -r requirements.txt
 
-# 2. Install all dependencies
-.venv\Scripts\pip.exe install -r requirements.txt
+# 2. Generate dataset
+python -m src.data.generate_dataset
 
-# 3. Remove pyarrow (Windows security issue)
-.venv\Scripts\pip.exe uninstall pyarrow -y
-
-# 4. Generate dataset
-.venv\Scripts\python.exe -m src.data.generate_dataset
-
-# 5. Verify everything works
-.venv\Scripts\python.exe -m pytest -v
+# 3. Verify everything works
+python -m pytest -v
 ```
 
 Expected: **71 tests passing**
@@ -49,7 +43,7 @@ Expected: **71 tests passing**
 
 ## What's Implemented
 
-### ✅ Agent 1 — ML / Risk Engine (23 tests)
+### ✅ Agent 1 — ML / Risk Engine (22 tests)
 - Synthetic fleet data (100 assets)
 - Hybrid risk scoring (ML + domain)
 - Explainable risk factors
@@ -61,7 +55,7 @@ Expected: **71 tests passing**
 - OpenAPI docs
 - CORS support
 
-### ✅ Agent 3 — Streamlit Dashboard (15 tests)
+### ✅ Agent 3 — Streamlit Dashboard (16 tests)
 - Fleet overview with KPIs
 - Maintenance priority queue
 - Asset detail view
@@ -77,11 +71,8 @@ Expected: **71 tests passing**
 ## Test MCP Integration
 
 ```powershell
-# Validate MCP layer
-.venv\Scripts\python.exe validate_mcp.py
-
 # Run MCP tests
-.venv\Scripts\python.exe -m pytest tests/test_mcp.py -v
+python -m pytest tests/test_mcp.py -v
 ```
 
 ---

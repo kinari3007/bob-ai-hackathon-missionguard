@@ -44,7 +44,7 @@ submission:
     - "Interactive Streamlit dashboard with fleet overview, priority queue, and per-asset detail views"
 
   tech_stack:
-    languages: ["Python 3.13"]                      # REQUIRED — e.g., ["Python", "TypeScript"]
+    languages: ["Python 3.14"]                      # REQUIRED — e.g., ["Python", "TypeScript"]
     frameworks: ["FastAPI", "Streamlit", "scikit-learn", "pandas"]                     # e.g., ["FastAPI", "React"]
     ibm_technologies: ["Model Context Protocol (MCP) for IBM Bob / watsonx integration"]               # e.g., ["watsonx.ai", "IBM Bob", "IBM Cloud Functions"]
     databases: ["CSV (local synthetic dataset)"]                      # e.g., ["PostgreSQL", "Redis"]

@@ -236,16 +236,10 @@ def create_mcp_server() -> MCPServer:
 # Standalone entry point for running the server directly
 if __name__ == "__main__":
     import asyncio
-    from mcp.server.stdio import stdio_server
 
     async def main():
         """Run the MCP server over stdio transport."""
-        async with stdio_server() as (read_stream, write_stream):
-            mcp = create_mcp_server()
-            await mcp.run(
-                read_stream,
-                write_stream,
-                mcp.create_initialization_options(),
-            )
+        mcp = create_mcp_server()
+        await mcp.run_stdio_async()
 
     asyncio.run(main())

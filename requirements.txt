@@ -1,23 +1,26 @@
-# MissionGuard AI — Python 3.13.15 / Windows x64
+# MissionGuard AI — Python 3.11+ / Windows x64
+#
+# Pin to minimum compatible versions.
+# Python 3.14: pip will automatically resolve the correct wheels.
+# Tested with: numpy 2.5.3, pandas 3.0.5, scikit-learn 1.9.1, joblib 1.6.0,
+#              fastapi 0.141+, uvicorn 0.53+, streamlit 1.63+, mcp 2.2+
 
 # ML/Risk Foundation (Agent 1)
-numpy==2.5.3
-pandas==2.2.3
-scikit-learn==1.9.1
-joblib==1.6.0
-pytest==9.1.1
+numpy>=2.0
+pandas>=2.2
+scikit-learn>=1.4
+joblib>=1.3
+pytest>=8.0
+pytest-asyncio>=0.23
 
 # API Layer (Agent 2)
-fastapi==0.115.12
-uvicorn[standard]==0.34.2
-httpx==0.28.1
+fastapi>=0.110
+uvicorn[standard]>=0.29
+httpx>=0.27
 
 # Dashboard (Agent 3)
-streamlit==1.45.1
-requests==2.32.3
+streamlit>=1.33
+requests>=2.31
 
 # MCP Integration (Agent 4)
 mcp[cli]>=2.0.0
-
-# NOTE: do NOT install pyarrow — its DLL is blocked by Windows Application Control
-# on the development machine. pandas works correctly without it.

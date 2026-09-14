@@ -99,3 +99,28 @@ models/*.joblib
 .terraform/
 *.tfstate
 *.tfstate.backup
+
+# ── Temporary validation / diagnostic scripts (generated during development) ──
+validate_all.py
+validate_all.bat
+run_validate.bat
+validate_output.txt
+run_tests_now.bat
+test_output.txt
+check_dash_syntax.py
+check_dash_syntax.bat
+run_dash_check.bat
+dash_syntax_out.txt
+run_final_tests.bat
+final_test_output.txt
+run_validate.bat
+
+# -- MCP inspection / one-off diagnostic outputs ----------------------------------------
+inspect_mcp.py
+inspect_mcp_out.txt
+inspect_mcpserver_api.py
+inspect_mcpserver_out.txt
+run_inspect.bat
+run_inspect2.bat
+run_server_test.bat
+server_start_out.txt

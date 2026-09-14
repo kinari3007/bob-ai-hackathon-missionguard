@@ -146,7 +146,7 @@ Add this to your IBM Bob MCP configuration file (typically `~/.config/bob/mcp_co
     "missionguard": {
       "command": "python",
       "args": ["run_mcp_server.py"],
-      "cwd": "D:\\Project\\IBM\\bob-ai-hackathon-missionguard",
+      "cwd": "/absolute/path/to/bob-ai-hackathon-missionguard",
       "env": {
         "MISSIONGUARD_RANDOM_SEED": "42"
       }
