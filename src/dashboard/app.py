@@ -58,6 +58,10 @@ def _inject_css() -> None:
             padding: 18px 20px 14px 20px;
             text-align: center;
             border: 1px solid #2d3348;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .kpi-label {
             font-size: 0.72rem;
@@ -187,7 +191,10 @@ def _inject_css() -> None:
             border-radius: 10px;
             padding: 22px 24px;
             margin-bottom: 16px;
-            height: 100%;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
         }
         .about-card h3 {
             font-size: 0.75rem;
@@ -196,6 +203,7 @@ def _inject_css() -> None:
             text-transform: uppercase;
             letter-spacing: 0.1em;
             margin: 0 0 10px 0;
+            flex-shrink: 0;
         }
         .about-card p {
             font-size: 0.9rem;
@@ -203,6 +211,7 @@ def _inject_css() -> None:
             color: #cbd5e1;
             line-height: 1.65;
             margin: 0;
+            flex: 1;
         }
         .flow-step {
             background: #1e2330;
@@ -211,6 +220,11 @@ def _inject_css() -> None:
             padding: 18px 20px;
             text-align: center;
             position: relative;
+            min-height: 145px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
         }
         .flow-step .step-icon {
             font-size: 1.8rem;
@@ -252,6 +266,10 @@ def _inject_css() -> None:
             border-radius: 10px;
             padding: 18px 20px;
             text-align: center;
+            min-height: 130px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .team-card .team-name {
             font-size: 0.95rem;
@@ -724,10 +742,6 @@ def main() -> None:
     # ── Navigation tabs ───────────────────────────────────────────────────────
     tab_dashboard, tab_about = st.tabs(["📊  Dashboard", "ℹ️  About"])
 
-    with tab_about:
-        _render_about()
-        return  # About page is standalone — no sidebar needed
-
     with tab_dashboard:
         # ── Sidebar ───────────────────────────────────────────────────────────
         _, readiness_filter, type_filter = _render_sidebar(client)
@@ -866,6 +880,9 @@ def main() -> None:
             "MissionGuard AI · IBM BoB AI Innovation Hackathon 2026 · "
             "Prototype — synthetic data only · Not for operational use"
         )
+
+    with tab_about:
+        _render_about()
 
 
 if __name__ == "__main__":
