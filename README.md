@@ -167,6 +167,9 @@ IBM Bob   Conversational interface
 
 Each layer calls the one below it without reimplementing its logic.
 
+![MissionGuard AI System Architechture](demo/screenshots/Workflow.png)
+
+> **Screenshot:** Main MissionGaurd AI System Architechture and entire project workflow.
 ---
 
 ## Repository Structure
