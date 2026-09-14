@@ -25,42 +25,83 @@ MissionGuard scores a fictional fleet CSV with a hybrid, interpretable risk engi
 - **Hybrid risk scores:** health, failure probability, LOW/MEDIUM/HIGH
 - **Readiness layer:** evidence-based READY / WARNING / NOT_READY
 - **Explainability:** top contributing factors and a recommended action per asset
-- **Agent-2 API:** `get_all_assets`, `get_asset_status`, `get_failure_risk`
+- **Maintenance priority:** deterministic ranking for service scheduling
+- **REST API:** FastAPI backend with OpenAPI docs (Agent 2)
+- **Python APIs:** `get_all_assets`, `get_asset_status`, `get_failure_risk`, `get_maintenance_priority`
 
 ## Tech Stack
 
 | Category | Technologies |
 |---|---|
-| **Languages** | Python |
-| **Frameworks** | pandas, NumPy, scikit-learn, pytest |
-| **IBM Technologies** | Not wired in this phase (reserved for later agents) |
+| **Languages** | Python 3.13.15 |
+| **ML/Data** | pandas, NumPy, scikit-learn |
+| **API** | FastAPI, uvicorn |
+| **Testing** | pytest, httpx |
+| **IBM Technologies** | Not wired yet (reserved for later agents) |
 | **Databases** | Local CSV |
-| **Other** | joblib (optional model snapshot) |
+| **Other** | joblib (model persistence) |
 
 ## Repository Structure
 
 ```
-├── src/                  # Risk engine package
-├── tests/                # pytest suite
-├── data/assets.csv       # Synthetic fleet
-├── docs/                 # Including docs/risk-engine.md
+├── src/
+│   ├── api/              # FastAPI REST API (Agent 2)
+│   ├── data/             # Data loading and generation (Agent 1)
+│   ├── models/           # ML risk model (Agent 1)
+│   ├── services/         # Risk engine and business logic (Agent 1)
+│   └── utils/            # Configuration and utilities (Agent 1)
+├── tests/                # pytest suite (Agent 1 & 2)
+├── data/assets.csv       # Synthetic fleet dataset
+├── docs/                 # Technical documentation
 ├── demo/                 # Demo artifacts (later)
 ├── presentation/         # Slide deck (later)
-└── submission.yaml       # Hackathon metadata (fill before submit)
+├── AGENT1_HANDOFF.md     # Foundation layer handoff
+├── AGENT2_HANDOFF.md     # API layer handoff
+└── submission.yaml       # Hackathon metadata
 ```
 
 ## How to Run
 
+### ML Foundation (Agent 1)
+
 ```powershell
+# Setup virtual environment (if not already done)
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
+
+# Install dependencies
 python -m pip install -r requirements.txt
+
+# Generate synthetic dataset
 python -m src.data.generate_dataset
+
+# Run risk engine
 python -m src
-python -m pytest
+
+# Run tests
+python -m pytest -v
 ```
 
-Details: [`docs/setup-guide.md`](docs/setup-guide.md) and [`docs/risk-engine.md`](docs/risk-engine.md).
+### REST API (Agent 2)
+
+```powershell
+# Install API dependencies (if not already done)
+.\.venv\Scripts\python.exe install_api_dependencies.py
+
+# Start API server
+.\.venv\Scripts\python.exe -m uvicorn src.api.main:app --reload
+
+# Access API documentation
+# Swagger UI: http://localhost:8000/docs
+# ReDoc: http://localhost:8000/redoc
+
+# Test API endpoints
+curl http://localhost:8000/health
+curl http://localhost:8000/assets
+curl http://localhost:8000/assets/A-001/status
+```
+
+Details: [`docs/setup-guide.md`](docs/setup-guide.md), [`docs/risk-engine.md`](docs/risk-engine.md), [`AGENT1_HANDOFF.md`](AGENT1_HANDOFF.md), and [`AGENT2_HANDOFF.md`](AGENT2_HANDOFF.md).
 
 ## Demo
 
@@ -74,10 +115,14 @@ Details: [`docs/setup-guide.md`](docs/setup-guide.md) and [`docs/risk-engine.md`
 ## Known Limitations
 
 - Synthetic data only; no real platform telemetry
-- No IBM Bob, MCP, HTTP API, or UI in this phase
+- No IBM Bob, MCP, or dashboard UI in current phase
 - Logistic regression + heuristic blend, not deep learning
 - Labels are generated, not observed failures
+- ~900 sklearn feature-name warnings (informational, not errors)
 
 ## What We're Most Proud Of
 
-A small, tested, explainable scoring pipeline that another agent can call as plain Python without re-implementing the model.
+- **Agent 1:** Small, tested, explainable ML scoring pipeline that produces deterministic, reproducible risk assessments
+- **Agent 2:** Clean REST API layer that wraps the foundation without reimplementing logic
+- **Architecture:** Clear separation of concerns (data → ML → API → future UI)
+- **Testability:** 38 tests covering foundation and API layers
