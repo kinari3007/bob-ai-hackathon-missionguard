@@ -1,5 +1,5 @@
 # MissionGuard AI — Mission Readiness & Predictive Maintenance Copilot
-
+this is readme file 
 Prototype decision-support system for IBM BoB AI Innovation Hackathon 2026, problem **D1**.
 All telemetry is **synthetic**. This is not operationally validated military software.
 
