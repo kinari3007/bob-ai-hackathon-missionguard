@@ -1,0 +1,22 @@
+============================= test session starts =============================
+collected 49 items
+
+tests\test_api.py ...........                                            [ 22%]
+tests\test_dashboard.py ................                                 [ 55%]
+tests\test_data_loader.py .....                                          [ 65%]
+tests\test_maintenance_priority.py ........                              [ 81%]
+tests\test_risk_engine.py .........                                      [100%]
+
+============================== warnings summary ===============================
+.venv\Lib\site-packages\starlette\testclient.py:37
+  C:\IBM Hackathone\bob-ai-hackathon-missionguard\.venv\Lib\site-packages\starlette\testclient.py:37: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+tests/test_api.py: 100 warnings
+tests/test_maintenance_priority.py: 800 warnings
+tests/test_risk_engine.py: 900 warnings
+  C:\IBM Hackathone\bob-ai-hackathon-missionguard\.venv\Lib\site-packages\sklearn\utils\validation.py:2830: UserWarning: X does not have valid feature names, but StandardScaler was fitted with feature names
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+====================== 49 passed, 1801 warnings in 1.46s ======================
