@@ -1,11 +1,11 @@
 {
   "mcpServers": {
     "missionguard-mcp": {
-      "command": "C:\\Users\\Preneel\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+      "command": "python",
       "args": [
-        "C:\\Users\\Preneel\\OneDrive\\Desktop\\Himay\\bob-ai-hackathon-missionguard\\run_mcp_server.py"
+        "run_mcp_server.py"
       ],
-      "cwd": "C:\\Users\\Preneel\\OneDrive\\Desktop\\Himay\\bob-ai-hackathon-missionguard",
+      "cwd": "${workspaceFolder}",
       "alwaysAllow": [],
       "disabled": false
     }

@@ -87,7 +87,7 @@ python -m pytest tests/test_mcp.py -v
 4. Create presentation (5-10 slides)
 5. Git push
 
-**See:** `FINAL_PROJECT_AUDIT.md` for complete checklist
+**See:** `docs/setup-guide.md` for the full setup guide and `submission.yaml` for the submission checklist
 
 ---
 
@@ -116,10 +116,11 @@ Streamlit Dashboard — Agent 3
 | File | Purpose |
 |---|---|
 | `README.md` | Complete project documentation |
-| `FINAL_PROJECT_AUDIT.md` | Full audit with submission checklist |
-| `AGENT4_HANDOFF.md` | Agent 4 technical handoff |
-| `docs/mcp-integration.md` | IBM Bob setup guide |
 | `submission.yaml` | Hackathon submission metadata |
+| `docs/setup-guide.md` | Full setup and run guide |
+| `docs/mcp-integration.md` | MCP tool reference |
+| `docs/bob-mcp-integration.md` | IBM Bob step-by-step setup |
+| `docs/architecture.md` | System architecture overview |
 
 ---
 
@@ -138,7 +139,7 @@ Streamlit Dashboard — Agent 3
 ⏱️ 2 hours (no code changes needed).
 
 **"What if something breaks?"**
-📖 See troubleshooting in `AGENT4_HANDOFF.md` or `docs/mcp-integration.md`.
+📖 See troubleshooting in `docs/mcp-integration.md` or `docs/bob-mcp-integration.md`.
 
 ---
 

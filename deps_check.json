@@ -1,7 +1,0 @@
-{
-  "fastapi": "MISSING",
-  "uvicorn": "MISSING",
-  "httpx": "MISSING",
-  "streamlit": "1.45.1",
-  "requests": "2.34.2"
-}

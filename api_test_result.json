@@ -1,6 +1,0 @@
-{
-  "status": "DEPENDENCY_ERROR",
-  "error": "FastAPI dependencies not installed",
-  "detail": "No module named 'fastapi'",
-  "action": "Run: .venv\\Scripts\\pip.exe install -r requirements.txt"
-}
