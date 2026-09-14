@@ -1,6 +1,7 @@
 # MissionGuard AI — Quick Start Guide
 
-**Status:** ✅ All 71 tests passing — Ready for submission
+**Team:** Team Sher
+**Status:** ✅ All 71 tests passing (71 passed in 3.69s) — Ready for submission
 **Time to demo:** 5 minutes
 
 ---
@@ -37,31 +38,32 @@ python -m src.data.generate_dataset
 python -m pytest -v
 ```
 
-Expected: **71 tests passing**
+Expected: **71 tests passing** (71 passed in 3.69s)
+Non-fatal warnings: ~1901 sklearn feature-name warnings + 1 Starlette deprecation — all safe to ignore
 
 ---
 
 ## What's Implemented
 
-### ✅ Agent 1 — ML / Risk Engine (22 tests)
+### ✅ ML / Risk Engine (22 tests)
 - Synthetic fleet data (100 assets)
 - Hybrid risk scoring (ML + domain)
 - Explainable risk factors
 - Mission readiness classification
 - Maintenance priority ranking
 
-### ✅ Agent 2 — FastAPI API (11 tests)
+### ✅ FastAPI API (11 tests)
 - 5 REST endpoints
 - OpenAPI docs
 - CORS support
 
-### ✅ Agent 3 — Streamlit Dashboard (16 tests)
+### ✅ Streamlit Dashboard (16 tests)
 - Fleet overview with KPIs
 - Maintenance priority queue
 - Asset detail view
 - Interactive charts
 
-### ✅ Agent 4 — IBM Bob / MCP Integration (22 tests)
+### ✅ IBM Bob / MCP Integration (22 tests)
 - MCP server with 5 tools
 - IBM Bob ready
 - Conversational AI interface
@@ -79,15 +81,17 @@ python -m pytest tests/test_mcp.py -v
 
 ## For Submission Team
 
-**MUST DO (2 hours):**
+**REMAINING ACTIONS (before final submission):**
 
-1. Fill `submission.yaml` with team info
-2. Record 3-5 min demo video
-3. Take 3+ screenshots
-4. Create presentation (5-10 slides)
-5. Git push
+1. ✅ `submission.yaml` — team info filled (Team Sher)
+2. ⚠️ Record 3–5 min demo video → add URL to `demo/demo-video-link.txt`
+3. ⚠️ Add 3 screenshots to `demo/screenshots/` (dashboard, asset detail, IBM Bob+MCP)
+4. ⚠️ Add presentation to `presentation/` as `MissionGuard-AI-Presentation.pdf` or `.pptx`
+5. Git push → confirm GitHub Actions ✅ Validate Submission passes
 
-**See:** `docs/setup-guide.md` for the full setup guide and `submission.yaml` for the submission checklist
+**Note:** There is no live deployment. Project runs locally only.
+
+**See:** `docs/setup-guide.md` for the full setup guide · `demo/DEMO_GUIDE.md` for demo script
 
 ---
 

@@ -11,10 +11,20 @@ Prototype decision-support system for **IBM BoB AI Innovation Hackathon 2026**, 
 
 | Field | Value |
 |---|---|
-| **Team Name** | To be completed before submission |
+| **Team Name** | Team Nova |
 | **Track** | AI |
-| **Team Lead** | To be completed before submission |
-| **Members** | To be completed before submission |
+| **Team Lead** | Himay Thummar |
+| **Members** | Kinari Thummar · Hetvi Patoliya · Himay Thummar · Prince Vaghasiya |
+| **Contact** | 24AIML069@charusat.edu.in |
+
+### Member Contributions
+
+| Name | ID | Role |
+|---|---|---|
+| Kinari Thummar | 24AIML070 | Lead Developer & Project Integration |
+| Hetvi Patoliya | 24AIML050 | AI/ML & Presentation Developer |
+| Himay Thummar | 24AIML069 | IBM Bob & MCP Integration Developer |
+| Prince Vaghasiya | 24AIML074 | Frontend Developer & UI Contributor |
 
 ---
 
@@ -51,26 +61,34 @@ a REST API, an interactive dashboard, and a conversational AI interface via IBM 
 
 ## Architecture
 
-```
-data/assets.csv  (100 synthetic assets, seed=42)
+```text
+data/assets.csv (100 synthetic assets, seed=42)
         │
         ▼
-Agent 1 — ML / Risk Engine   src/data/ + src/models/ + src/services/
-        │  Python function calls
+ML / Risk Engine
+src/data/ + src/models/ + src/services/
+        │
+        │ Python function calls
         ▼
-Agent 2 — FastAPI REST API   src/api/main.py         → http://localhost:8000
-        │  HTTP requests
+FastAPI REST API
+src/api/main.py → http://localhost:8000
+        │
+        │ HTTP requests
         ▼
-Agent 3 — Streamlit Dashboard  src/dashboard/app.py  → http://localhost:8501
+Streamlit Dashboard
+src/dashboard/app.py → http://localhost:8501
 
-Agent 4 — MCP Server   src/mcp/server.py  ←→  IBM Bob / watsonx (stdio or HTTP)
-        │  calls Agent 1 APIs directly (no duplication)
+ML / Risk Engine
+        │
+        │ Direct Python function calls
         ▼
-IBM Bob AI Agent  (conversational interface — requires separate IBM Bob installation)
-```
-
-Each agent layer calls the previous one without reimplementing its logic.
-
+MCP Server
+src/mcp/server.py
+        │
+        │ stdio transport
+        ▼
+IBM Bob
+Conversational interface
 ---
 
 ## Repository Structure
@@ -214,7 +232,22 @@ The server runs over stdio and is ready for IBM Bob to connect. See
 python -m pytest -v
 ```
 
-Expected result: **71 tests passing** (verified on Python 3.14 / pytest 9.1.1).
+Expected result: **71 tests passing**.
+
+```
+tests/test_data_loader.py            5 passed
+tests/test_risk_engine.py            9 passed
+tests/test_maintenance_priority.py   8 passed
+tests/test_api.py                   11 passed
+tests/test_dashboard.py             16 passed
+tests/test_mcp.py                   22 passed
+──────────────────────────────────────────────
+71 passed in 3.69s
+```
+
+Non-fatal warnings (safe to ignore):
+- ~1901 sklearn `UserWarning` about feature names — informational, no effect on scores
+- 1 Starlette/AnyIO `DeprecationWarning` — benign
 
 ### 6 — (Optional) Run the risk engine directly
 
@@ -380,11 +413,12 @@ These numbers come from the validated system with seed=42:
 - **Synthetic data only** — no real platform telemetry
 - **Logistic regression + heuristic blend** — not deep learning
 - **Labels are generated**, not observed failure rates
-- **~1900 sklearn feature-name warnings** — informational, not errors; safe to ignore
+- **~1901 sklearn feature-name warnings** — informational, not errors; safe to ignore
 - **Dashboard requires the FastAPI backend** to be running separately
 - **IBM Bob live connection** requires a separate IBM Bob installation and configuration
 - **No authentication** — suitable for demo, not production deployment
-- **No persistence** — model is re-fit from the CSV on each cold start (fast: <1 second)
+- **No persistence** — model is re-fit from the CSV on each cold start (fast: < 1 second)
+- **Local demo only** — no public deployment
 
 ---
 

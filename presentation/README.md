@@ -1,16 +1,25 @@
 # MissionGuard AI Presentation
 
-**Instructions:** Add your presentation file to this directory before submission.
+> **Status:** ⚠️ Presentation to be added before submission.
+> Add the slide deck to this directory as `MissionGuard-AI-Presentation.pdf` (preferred) or `.pptx`.
 
-## Required Presentation
+---
 
-Create a 5-10 slide presentation covering:
+## Required File
 
-### Suggested Slide Structure
+| Format | Filename |
+|---|---|
+| PDF (preferred) | `MissionGuard-AI-Presentation.pdf` |
+| PowerPoint (also accepted) | `MissionGuard-AI-Presentation.pptx` |
+
+---
+
+## Suggested Slide Structure (5–10 slides)
 
 **Slide 1: Title**
 - Project name: MissionGuard AI
-- Team name
+- Team name: Team Sher
+- Members: Kinari Thummar, Hetvi Patoliya, Himay Thummar, Prince Vaghasiya
 - Tagline: "Mission Readiness & Predictive Maintenance Copilot"
 
 **Slide 2: Problem Statement**
@@ -31,10 +40,10 @@ Create a 5-10 slide presentation covering:
 - Interactive dashboard with fleet overview
 
 **Slide 5: Technology Stack**
-- Languages: Python 3.13
+- Languages: Python 3.14
 - Frameworks: FastAPI, Streamlit, scikit-learn, pandas
-- IBM Technologies: Model Context Protocol (MCP) for IBM Bob / watsonx
-- Testing: 71 automated tests
+- IBM Technologies: Model Context Protocol (MCP) for IBM Bob
+- Testing: 71 automated tests (71 passed in 3.69s)
 
 **Slide 6: Demo Screenshots**
 - Dashboard main view
@@ -67,14 +76,21 @@ Save as:
 - `MissionGuard-AI-Presentation.pdf` (preferred)
 - `MissionGuard-AI-Presentation.pptx` (also acceptable)
 
-## Design Tips
-
-- Use high contrast for readability
-- Include screenshots (from `demo/screenshots/`)
-- Keep text concise (bullet points, not paragraphs)
-- Use consistent branding/colors
-- Include architecture diagram from README
+**Slide 10: Thank You**
+- GitHub repository link
+- Demo video link (to be added)
+- Contact: 24AIML070@charusat.edu.in
 
 ---
 
-**Current status:** Placeholder README — Add actual presentation before submission
+## Design Tips
+
+- Use high contrast for readability
+- Include screenshots (from `demo/screenshots/`) once they are taken
+- Keep text concise (bullet points, not paragraphs)
+- Use consistent branding/colors
+- Include the architecture diagram from `docs/architecture.md`
+
+---
+
+*Presentation to be prepared by Hetvi Patoliya (AI/ML & Presentation Developer).*

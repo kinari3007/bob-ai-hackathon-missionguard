@@ -1,13 +1,18 @@
 https://your-demo-video-url-here.com
 
 # MissionGuard AI — Demo Video Link
-# Replace the URL on line 1 with your actual hosted video link before pushing.
+# ⚠️  ACTION REQUIRED: Replace the URL on line 1 with your actual hosted video link before submission.
 #
 # Suggested platforms: YouTube (unlisted), Loom, IBM Box, Vimeo
 #
-# Suggested content (3–5 minutes):
-#   1. Introduction (30s) — project name, team, problem statement
-#   2. Dashboard Demo (2m) — fleet overview, priority queue, asset detail, risk factors
+# Suggested video content (3–5 minutes):
+#   1. Introduction (30s) — project name, team name, problem statement
+#   2. Dashboard Demo (90s) — fleet overview KPIs, priority queue, asset detail, risk factors
 #   3. API Demo (30s, optional) — Swagger docs at http://localhost:8000/docs
-#   4. IBM Bob Demo (1m, recommended) — conversational queries via MCP integration
-#   5. Conclusion (30s) — key achievements: explainability, MCP, 71 tests
+#   4. IBM Bob Demo (60s, recommended) — conversational query demo via MCP tools
+#   5. Conclusion (30s) — explainability, MCP integration, 71 passing tests
+#
+# Intended demo flow:
+#   Dashboard → select a risky asset → view risk factors →
+#   ask IBM Bob about the asset → Bob calls MCP tool → retrieve maintenance priority →
+#   Bob presents an explanation to the user

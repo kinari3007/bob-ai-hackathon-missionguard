@@ -1,70 +1,84 @@
 # MissionGuard AI Screenshots
 
-**Instructions:** Add at least 3 screenshots to this directory.
-
-## Required Screenshots (Minimum 3)
-
-1. **dashboard-main-view.png** — Dashboard with KPI cards, fleet overview, risk distribution
-2. **priority-queue.png** — Maintenance priority queue showing top 15 assets
-3. **asset-detail.png** — Asset detail view with risk factors and recommended action
-
-## Optional Screenshots (Nice to Have)
-
-4. **api-docs.png** — FastAPI Swagger documentation at http://localhost:8000/docs
-5. **bob-conversation.png** — IBM Bob asking about fleet health (if Bob is installed)
-6. **mcp-inspector.png** — MCP Inspector showing registered tools
-7. **architecture-diagram.png** — Architecture overview from README
-
-## How to Take Screenshots
-
-### Dashboard (http://localhost:8501)
-
-1. Start FastAPI backend:
-   ```powershell
-   .\.venv\Scripts\python.exe -m uvicorn src.api.main:app --reload --port 8000
-   ```
-
-2. Start Streamlit dashboard:
-   ```powershell
-   .\.venv\Scripts\python.exe -m streamlit run src/dashboard/app.py
-   ```
-
-3. Navigate to http://localhost:8501
-
-4. Take screenshots:
-   - Main view: Full page with KPI cards, charts
-   - Priority queue: Scroll to "Maintenance Priority Queue" section
-   - Asset detail: Use dropdown to select an asset (e.g., A-001), show detail panel
-
-### API Docs (http://localhost:8000/docs)
-
-1. Ensure backend is running
-2. Open http://localhost:8000/docs in browser
-3. Take screenshot showing all 5 endpoints
-
-### IBM Bob (Optional)
-
-1. Configure Bob per `docs/mcp-integration.md`
-2. Ask Bob: "Give me a fleet overview"
-3. Take screenshot of Bob's response
-
-## File Naming Convention
-
-Use descriptive kebab-case names:
-- `dashboard-main-view.png`
-- `maintenance-priority-queue.png`
-- `asset-detail-a001.png`
-- `fastapi-swagger-docs.png`
-- `ibm-bob-fleet-query.png`
-
-## Image Requirements
-
-- Format: PNG or JPG
-- Resolution: At least 1280x720 (HD)
-- Quality: High (not compressed/blurry)
-- Content: Clear, readable text
-- No sensitive information
+> **Status:** Screenshots will be added before submission.
 
 ---
 
-**Current status:** Placeholder README — Add actual screenshots before submission
+## Required Screenshots (Minimum 3)
+
+Add at least 3 screenshots to this directory before submission.
+
+| # | Filename (suggested) | Content |
+|---|---|---|
+| 1 | `01-dashboard-fleet-overview.png` | Dashboard main view with KPI cards (Total Assets=100, READY=38, WARNING=35, NOT_READY=27, HIGH RISK=27), fleet readiness chart, and risk distribution chart |
+| 2 | `02-risky-asset-detail.png` | Asset detail panel for a HIGH-risk asset (e.g., A-042) showing health score, failure probability, risk factors, and recommended action |
+| 3 | `03-ibm-bob-mcp-interaction.png` | IBM Bob chat window showing a conversational query (e.g., "Why is asset A-042 high risk?") and the MCP tool response |
+
+---
+
+## How to Take Screenshots
+
+### Screenshot 1 — Dashboard Fleet Overview
+
+1. Start the FastAPI backend:
+   ```powershell
+   python -m uvicorn src.api.main:app --reload --port 8000
+   ```
+
+2. Start the Streamlit dashboard:
+   ```powershell
+   python -m streamlit run src/dashboard/app.py
+   ```
+
+3. Open **http://localhost:8501** in a browser.
+
+4. Capture the full page showing:
+   - KPI cards at the top (100 total, 38 READY, 35 WARNING, 27 NOT_READY, 27 HIGH RISK)
+   - Fleet readiness bar/chart
+   - Risk distribution chart
+   - Maintenance priority queue (top 15 assets)
+
+### Screenshot 2 — Risky Asset Detail
+
+1. With the dashboard running at **http://localhost:8501**:
+   - Use the asset dropdown or filter to select a HIGH-risk asset (e.g., A-042)
+   - Scroll to the asset detail panel
+
+2. Capture the detail panel showing:
+   - Health score and failure probability
+   - Risk level (HIGH) and readiness status (NOT_READY)
+   - Top 3 risk factors
+   - Recommended action
+
+### Screenshot 3 — IBM Bob + MCP Interaction
+
+1. Open the MissionGuard project in IBM Bob (File → Open Folder).
+2. Ensure the `missionguard-mcp` server is connected (visible in the MCP panel).
+3. In the IBM Bob chat, ask: "Why is asset A-042 at high risk?" or "Give me a fleet overview."
+4. When Bob calls the MCP tool (a confirmation dialog may appear), approve the call.
+5. Capture the IBM Bob chat window showing:
+   - The user prompt
+   - The MCP tool call (tool name + parameters visible in IBM Bob UI)
+   - Bob's natural-language response with the risk analysis
+
+---
+
+## Image Requirements
+
+- **Format:** PNG or JPG
+- **Resolution:** At least 1280×720 (HD or higher preferred)
+- **Quality:** Clear, readable text — avoid heavy compression
+- **Content:** No sensitive personal information visible in the screenshot
+
+---
+
+## File Naming Convention
+
+Use descriptive, sequential names:
+- `01-dashboard-fleet-overview.png`
+- `02-risky-asset-detail.png`
+- `03-ibm-bob-mcp-interaction.png`
+
+Optional additional screenshots:
+- `04-api-swagger-docs.png` — FastAPI Swagger UI at http://localhost:8000/docs
+- `05-maintenance-priority-queue.png` — Priority queue close-up
