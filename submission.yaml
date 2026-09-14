@@ -23,37 +23,44 @@ team:
       email: ""
 
 submission:
-  title: ""                            # REQUIRED — Project display name, e.g., "SmartOps Dashboard"
+  title: "MissionGuard AI"             # REQUIRED — Project display name, e.g., "SmartOps Dashboard"
 
   problem_statement: >                 # REQUIRED — 1-3 sentences. What problem? Who has it?
-    Replace this text with a concise description of the real-world problem
-    your project addresses and who experiences it.
+    Military asset maintainers lack fast, explainable insights into which platforms
+    are mission-ready, why assets are at risk, and what to service first. Spreadsheets
+    of sensor data do not produce ranked, actionable maintenance decisions.
 
   solution_summary: >                  # REQUIRED — 1-3 sentences. What did you build?
-    Replace this text with a clear description of your solution
-    and how it addresses the problem above.
+    MissionGuard AI provides an intelligent decision-support system that analyzes
+    fleet health using explainable ML, classifies mission readiness, ranks maintenance
+    priorities, and exposes insights through REST API, interactive dashboard, and
+    conversational AI via IBM Bob / Model Context Protocol integration.
 
   key_features:                        # REQUIRED — List 3 to 5 specific features you implemented
-    - ""                               # e.g., "Real-time pipeline anomaly detection using watsonx.ai"
-    - ""
-    - ""
-    - ""                               # optional 4th
-    - ""                               # optional 5th
+    - "Explainable risk scoring with human-readable risk factors for every asset"
+    - "Mission readiness classification (READY/WARNING/NOT_READY) based on multiple evidence sources"
+    - "Maintenance priority ranking with deterministic scoring across the entire fleet"
+    - "IBM Bob conversational interface via Model Context Protocol (MCP) for natural language queries"
+    - "Interactive Streamlit dashboard with fleet overview, priority queue, and per-asset detail views"
 
   tech_stack:
-    languages: []                      # REQUIRED — e.g., ["Python", "TypeScript"]
-    frameworks: []                     # e.g., ["FastAPI", "React"]
-    ibm_technologies: []               # e.g., ["watsonx.ai", "IBM Bob", "IBM Cloud Functions"]
-    databases: []                      # e.g., ["PostgreSQL", "Redis"]
-    other: []                          # e.g., ["Docker", "GitHub Actions", "Slack API"]
+    languages: ["Python 3.13"]                      # REQUIRED — e.g., ["Python", "TypeScript"]
+    frameworks: ["FastAPI", "Streamlit", "scikit-learn", "pandas"]                     # e.g., ["FastAPI", "React"]
+    ibm_technologies: ["Model Context Protocol (MCP) for IBM Bob / watsonx integration"]               # e.g., ["watsonx.ai", "IBM Bob", "IBM Cloud Functions"]
+    databases: ["CSV (local synthetic dataset)"]                      # e.g., ["PostgreSQL", "Redis"]
+    other: ["NumPy", "pytest", "uvicorn", "requests"]                          # e.g., ["Docker", "GitHub Actions", "Slack API"]
 
   what_we_are_most_proud_of: >         # Optional but recommended — guides judges to your best work
-    Replace with what aspect of the submission you consider strongest
-    and want judges to pay special attention to.
+    Clean architectural layering where each agent builds on previous work without
+    rewriting it, comprehensive explainability with human-readable risk factors,
+    71 automated tests covering all layers, and genuine IBM Bob MCP integration
+    ready for conversational AI interaction.
 
   known_limitations: >                 # Optional but recommended — be honest about gaps
-    Replace with any known limitations, incomplete features,
-    or shortcuts taken due to time constraints.
+    Uses synthetic data only (not real military telemetry), employs logistic
+    regression with domain heuristics rather than deep learning, generates labels
+    rather than using observed failure rates, requires IBM Bob installation
+    separately for live conversational interface testing.
 
 # =============================================================================
 # ARTIFACT LOCATIONS

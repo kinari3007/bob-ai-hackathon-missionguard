@@ -2,7 +2,7 @@
 
 # ML/Risk Foundation (Agent 1)
 numpy==2.5.3
-pandas==3.0.5
+pandas==2.2.3
 scikit-learn==1.9.1
 joblib==1.6.0
 pytest==9.1.1
@@ -16,5 +16,8 @@ httpx==0.28.1
 streamlit==1.45.1
 requests==2.32.3
 
+# MCP Integration (Agent 4)
+mcp[cli]>=2.0.0
+
 # NOTE: do NOT install pyarrow — its DLL is blocked by Windows Application Control
-# on the development machine. pandas 3.0.5 works correctly without it.
+# on the development machine. pandas works correctly without it.
