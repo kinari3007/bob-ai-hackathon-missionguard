@@ -6,6 +6,7 @@ from src.services.risk_engine import (
     get_asset_status,
     get_engine,
     get_failure_risk,
+    get_maintenance_priority,
     print_fleet_summary,
 )
 from src.utils.exceptions import AssetNotFoundError
@@ -17,5 +18,6 @@ __all__ = [
     "get_asset_status",
     "get_engine",
     "get_failure_risk",
+    "get_maintenance_priority",
     "print_fleet_summary",
 ]

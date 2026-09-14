@@ -5,6 +5,7 @@ from src.services.risk_engine import (
     get_all_assets,
     get_asset_status,
     get_failure_risk,
+    get_maintenance_priority,
 )
 
 __all__ = [
@@ -12,4 +13,5 @@ __all__ = [
     "get_all_assets",
     "get_asset_status",
     "get_failure_risk",
+    "get_maintenance_priority",
 ]

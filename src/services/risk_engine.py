@@ -125,6 +125,82 @@ class RiskEngine:
             "recommended_action": record["recommended_action"],
         }
 
+    def get_maintenance_priority(self, asset_id: str) -> dict[str, Any]:
+        """Return maintenance priority score and ranking information."""
+        record = self._get_record(asset_id)
+        priority_score = self._calculate_priority_score(record)
+        
+        # Calculate ranking among all assets
+        all_assets = self.get_all_assets()
+        priorities = [
+            (a["asset_id"], self._calculate_priority_score(self._records[a["asset_id"]]))
+            for a in all_assets
+        ]
+        priorities.sort(key=lambda x: x[1], reverse=True)
+        rank = next(i + 1 for i, (aid, _) in enumerate(priorities) if aid == asset_id)
+        
+        return {
+            "asset_id": record["asset_id"],
+            "asset_type": record["asset_type"],
+            "priority_score": round(priority_score, 2),
+            "priority_rank": rank,
+            "total_assets": len(all_assets),
+            "readiness_status": record["readiness_status"],
+            "risk_level": record["risk_level"],
+            "health_score": record["health_score"],
+            "priority_reasons": self._priority_reasons(record),
+            "recommended_action": record["recommended_action"],
+        }
+
+    @staticmethod
+    def _calculate_priority_score(record: dict[str, Any]) -> float:
+        """Calculate maintenance priority score (0-100, higher = more urgent)."""
+        # Base score from failure probability (0-50 points)
+        prob_score = float(record["failure_probability"]) * 50.0
+        
+        # Readiness contribution (0-30 points)
+        readiness_map = {"NOT_READY": 30.0, "WARNING": 15.0, "READY": 0.0}
+        readiness_score = readiness_map.get(record["readiness_status"], 0.0)
+        
+        # Risk level contribution (0-20 points)
+        risk_map = {"HIGH": 20.0, "MEDIUM": 10.0, "LOW": 0.0}
+        risk_score = risk_map.get(record["risk_level"], 0.0)
+        
+        # Health penalty (0-10 points for low health)
+        health = float(record["health_score"])
+        health_penalty = max(0.0, (60.0 - health) / 6.0) if health < 60.0 else 0.0
+        
+        total = prob_score + readiness_score + risk_score + health_penalty
+        return min(100.0, total)
+
+    @staticmethod
+    def _priority_reasons(record: dict[str, Any]) -> list[str]:
+        """Generate human-readable reasons for priority ranking."""
+        reasons = []
+        
+        if record["readiness_status"] == "NOT_READY":
+            reasons.append("Asset not mission-ready")
+        elif record["readiness_status"] == "WARNING":
+            reasons.append("Asset status warning")
+        
+        if record["risk_level"] == "HIGH":
+            reasons.append("High failure risk")
+        elif record["risk_level"] == "MEDIUM":
+            reasons.append("Moderate failure risk")
+        
+        health = float(record["health_score"])
+        if health < 40.0:
+            reasons.append("Critical health score")
+        elif health < 65.0:
+            reasons.append("Low health score")
+        
+        # Add top risk factor if available
+        factors = record.get("top_risk_factors", [])
+        if factors:
+            reasons.append(f"Primary concern: {factors[0]}")
+        
+        return reasons if reasons else ["Routine maintenance"]
+
     def summary(self) -> dict[str, Any]:
         """Fleet-level counts used by the CLI validation printout."""
         assets = self.get_all_assets()
@@ -190,6 +266,10 @@ def get_asset_status(asset_id: str) -> dict[str, Any]:
 
 def get_failure_risk(asset_id: str) -> dict[str, Any]:
     return get_engine().get_failure_risk(asset_id)
+
+
+def get_maintenance_priority(asset_id: str) -> dict[str, Any]:
+    return get_engine().get_maintenance_priority(asset_id)
 
 
 def print_fleet_summary(engine: RiskEngine | None = None) -> None:
