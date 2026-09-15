@@ -99,15 +99,15 @@ The MissionGuard MCP server exposes 5 tools:
 
 ### Prerequisites
 
-1. Python 3.10+ with virtual environment
+1. Python 3.11+ (tested with Python 3.14 on Windows)
 2. All dependencies installed:
    ```powershell
-   .\.venv\Scripts\pip.exe install -r requirements.txt
+   pip install -r requirements.txt
    ```
 
 3. Dataset generated:
    ```powershell
-   .\.venv\Scripts\python.exe -m src.data.generate_dataset
+   python -m src.data.generate_dataset
    ```
 
 ### Standalone Server (stdio)
@@ -116,10 +116,10 @@ For local testing with the [MCP Inspector](https://github.com/modelcontextprotoc
 
 ```powershell
 # Option 1: Using mcp dev command
-.\.venv\Scripts\python.exe -m mcp dev src/mcp/server.py
+python -m mcp dev src/mcp/server.py
 
-# Option 2: Direct invocation
-.\.venv\Scripts\python.exe run_mcp_server.py
+# Option 2: Direct invocation (recommended)
+python run_mcp_server.py
 ```
 
 This starts the server over stdio transport, ready to accept MCP client connections.
@@ -129,7 +129,7 @@ This starts the server over stdio transport, ready to accept MCP client connecti
 For deployment or remote IBM Bob instances:
 
 ```powershell
-.\.venv\Scripts\python.exe -m mcp run src/mcp/server.py --transport streamable-http --port 8100
+python -m mcp run src/mcp/server.py --transport streamable-http --port 8100
 ```
 
 The server will be available at `http://localhost:8100/mcp`.
@@ -138,7 +138,8 @@ The server will be available at `http://localhost:8100/mcp`.
 
 ### Local Server (stdio)
 
-Add this to your IBM Bob MCP configuration file (typically `~/.config/bob/mcp_config.json` or similar):
+The workspace-scoped configuration is already committed at `.bob/mcp.json`. For reference,
+the structure is:
 
 ```json
 {
@@ -191,7 +192,7 @@ WATSONX_URL=https://us-south.ml.cloud.ibm.com
 Run the MCP test suite:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest tests/test_mcp.py -v
+python -m pytest tests/test_mcp.py -v
 ```
 
 Expected: **22 tests passing**
@@ -200,7 +201,7 @@ Expected: **22 tests passing**
 
 1. Start the MCP server:
    ```powershell
-   .\.venv\Scripts\python.exe -m mcp dev src/mcp/server.py
+   python -m mcp dev src/mcp/server.py
    ```
 
 2. Open the MCP Inspector in your browser (launched automatically)
@@ -281,25 +282,25 @@ Once configured in Bob:
 
 Install the MCP SDK:
 ```powershell
-.\.venv\Scripts\pip.exe install "mcp[cli]>=2.0.0"
+pip install "mcp[cli]>=2.0.0"
 ```
 
 ### "Asset not found" errors
 
 Ensure the dataset is generated:
 ```powershell
-.\.venv\Scripts\python.exe -m src.data.generate_dataset
+python -m src.data.generate_dataset
 ```
 
 ### sklearn warnings
 
-~1800 sklearn warnings about feature names are expected and safe to ignore. They do not affect functionality.
+~1901 sklearn warnings about feature names are expected and safe to ignore. They do not affect functionality.
 
 ### Bob cannot connect
 
 1. Verify the MCP server is running:
    ```powershell
-   .\.venv\Scripts\python.exe run_mcp_server.py
+   python run_mcp_server.py
    ```
 
 2. Check Bob's MCP config points to the correct path/URL
@@ -331,13 +332,13 @@ CMD ["python", "-m", "mcp", "run", "src/mcp/server.py", "--transport", "streamab
 - **No persistence:** All state is in-memory per request
 - **Single-threaded:** Suitable for demo, not high-concurrency production
 
-## Next Steps
+## Current Status
 
-1. ✅ MCP server implemented and tested (Agent 4)
-2. ⏭️ Test with actual IBM Bob instance
-3. ⏭️ Integrate with watsonx.ai for enhanced AI capabilities
-4. ⏭️ Add authentication if deploying publicly
-5. ⏭️ Consider caching for high-traffic scenarios
+- ✅ MCP server implemented and tested (22/22 tests passing)
+- ✅ IBM Bob MCP integration demonstrated locally
+- ⏭️ watsonx.ai model integration (credentials reserved, not required for local demo)
+- ⏭️ Authentication (not required for prototype)
+- ⏭️ Caching (not required for demo scale)
 
 ## References
 

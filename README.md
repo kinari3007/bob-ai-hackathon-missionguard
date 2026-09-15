@@ -1,37 +1,67 @@
 # MissionGuard AI — Mission Readiness & Predictive Maintenance Copilot
 
-Prototype decision-support system for **IBM BoB AI Innovation Hackathon 2026**, problem **D1**.
+MissionGuard AI is a prototype decision-support system built for the **IBM Bob AI Innovation Hackathon 2026 — D1: Mission Readiness & Predictive Maintenance**.
 
-> **Disclaimer:** All telemetry data is entirely synthetic and fictional. Risk probabilities are
-> model estimates, not observed failure rates. Do not use for real military operations.
+It analyzes a synthetic fleet of assets and helps users answer three important questions:
+
+- Which assets are mission-ready?
+- Which assets have the highest failure risk?
+- Which assets should be prioritized for maintenance?
+
+> **Disclaimer:** All telemetry data used by this project is synthetic and fictional. Risk probabilities are model estimates, not observed failure rates. This prototype is for demonstration and decision-support purposes only and must not be used for real military operations.
 
 ---
 
 ## Team
 
-| Field | Value |
+| Field | Details |
 |---|---|
-| **Team Name** | To be completed before submission |
+| **Team Name** | Team Nova |
 | **Track** | AI |
-| **Team Lead** | To be completed before submission |
-| **Members** | To be completed before submission |
+| **Team Lead** | Himay Thummar |
+| **Contact** | 24AIML069@charusat.edu.in |
+
+### Team Members
+
+| Name | ID | Role |
+|---|---|---|
+| Kinari Thummar | 24AIML070 | Lead Developer & Project Integration |
+| Hetvi Patoliya | 24AIML050 | AI/ML & Presentation Developer |
+| Himay Thummar | 24AIML069 | IBM Bob & MCP Integration Developer |
+| Prince Vaghasiya | 24AIML074 | Frontend Developer & UI Contributor |
 
 ---
 
 ## Problem Statement
 
-Military asset maintainers lack fast, explainable insight into which platforms are mission-ready,
-why specific assets are at risk, and which maintenance tasks should happen first. Spreadsheets of
-sensor readings do not produce ranked, actionable decisions.
+Maintaining a large fleet requires quick and understandable information about asset health and maintenance urgency.
+
+Traditional spreadsheets and raw telemetry can make it difficult to determine:
+
+- which assets are ready for a mission,
+- why an asset is considered risky,
+- which assets need attention first, and
+- what action should be taken.
+
+MissionGuard AI transforms this information into simple, explainable decision-support outputs.
 
 ---
 
 ## Solution
 
-MissionGuard AI is a decision-support system that analyzes a synthetic fleet using a hybrid
-risk engine (logistic regression + domain heuristics), classifies mission readiness, ranks
-maintenance priorities, explains every score in plain language, and exposes everything through
-a REST API, an interactive dashboard, and a conversational AI interface via IBM Bob / MCP.
+MissionGuard AI combines:
+
+- synthetic asset telemetry,
+- machine-learning risk prediction,
+- domain-based health heuristics,
+- mission-readiness classification,
+- maintenance prioritization,
+- explainable risk factors,
+- a FastAPI backend,
+- a Streamlit dashboard, and
+- IBM Bob integration through MCP.
+
+The numerical analysis is performed by the MissionGuard risk engine, while IBM Bob provides a natural-language interface for interacting with the results through MCP tools.
 
 ---
 
@@ -39,67 +69,135 @@ a REST API, an interactive dashboard, and a conversational AI interface via IBM 
 
 | Feature | Description |
 |---|---|
-| **Hybrid risk scores** | Health score (0–100), failure probability (0–1), LOW/MEDIUM/HIGH classification |
-| **Mission readiness** | Evidence-based READY / WARNING / NOT_READY per asset |
-| **Explainability** | Up to 3 human-readable risk factors and a recommended action per asset |
-| **Maintenance priority** | Deterministic priority score (0–100) and fleet-wide rank (1–100) |
-| **REST API** | FastAPI with auto-generated OpenAPI / Swagger docs |
-| **Streamlit dashboard** | Fleet overview, KPIs, priority queue, per-asset detail view |
-| **MCP / IBM Bob** | 5 conversational AI tools for natural-language fleet queries |
+| **Health Score** | Provides an asset health score from 0–100 |
+| **Failure Risk** | Estimates failure probability and assigns LOW, MEDIUM, or HIGH risk |
+| **Mission Readiness** | Classifies assets as READY, WARNING, or NOT_READY |
+| **Explainability** | Provides human-readable risk factors and recommended actions |
+| **Maintenance Priority** | Calculates a priority score and fleet-wide ranking |
+| **Fleet Dashboard** | Shows fleet KPIs, readiness, risk distribution, and maintenance priority queue |
+| **REST API** | Provides FastAPI endpoints for asset analysis with Swagger docs |
+| **MCP Integration** | Exposes MissionGuard capabilities to IBM Bob via 5 MCP tools |
+| **Conversational Queries** | Allows natural-language fleet queries through IBM Bob |
+
+---
+
+## Dashboard
+
+The MissionGuard AI dashboard provides a simple overview of fleet readiness, risk, and maintenance needs.
+
+It includes:
+
+- total asset count,
+- READY / WARNING / NOT_READY counts,
+- risk distribution,
+- maintenance priority queue,
+- asset-level risk information,
+- recommended actions, and
+- backend connection status.
+
+### Main Dashboard
+
+![MissionGuard AI Main Dashboard](demo/screenshots/01-dashboard.png)
+
+> **Screenshot:** Main MissionGaurd Dashboard Overview.
+
+### About / Project Details
+
+![MissionGuard AI About Page](demo/screenshots/02-about.png)
+
+> **Screenshot:** The Aboout page of Frontend containing Project Information.
+
+---
+
+## How MissionGuard AI Works
+
+```text
+Synthetic Asset Data
+        │
+        ▼
+Data Processing & Feature Engineering
+        │
+        ▼
+Risk Engine
+        │
+        ├── Health Score
+        ├── Failure Probability
+        ├── Risk Level
+        ├── Mission Readiness
+        ├── Risk Factors
+        └── Maintenance Priority
+        │
+        ├──────────────────┐
+        ▼                  ▼
+   FastAPI API         MCP Server
+        │                  │
+        ▼                  ▼
+   Streamlit           IBM Bob
+   Dashboard       Conversational AI
+```
 
 ---
 
 ## Architecture
 
-```
+```text
 data/assets.csv  (100 synthetic assets, seed=42)
         │
         ▼
-Agent 1 — ML / Risk Engine   src/data/ + src/models/ + src/services/
+ML / Risk Engine   src/data/ + src/models/ + src/services/
+        │
         │  Python function calls
         ▼
-Agent 2 — FastAPI REST API   src/api/main.py         → http://localhost:8000
+FastAPI REST API   src/api/main.py  →  http://localhost:8000
+        │
         │  HTTP requests
         ▼
-Agent 3 — Streamlit Dashboard  src/dashboard/app.py  → http://localhost:8501
+Streamlit Dashboard   src/dashboard/app.py  →  http://localhost:8501
 
-Agent 4 — MCP Server   src/mcp/server.py  ←→  IBM Bob / watsonx (stdio or HTTP)
-        │  calls Agent 1 APIs directly (no duplication)
+ML / Risk Engine
+        │
+        │  Direct Python function calls
         ▼
-IBM Bob AI Agent  (conversational interface — requires separate IBM Bob installation)
+MCP Server   src/mcp/server.py
+        │
+        │  stdio transport
+        ▼
+IBM Bob   Conversational interface
 ```
 
-Each agent layer calls the previous one without reimplementing its logic.
+Each layer calls the one below it without reimplementing its logic.
 
+![MissionGuard AI System Architechture](demo/screenshots/Workflow.png)
+
+> **Screenshot:** Main MissionGaurd AI System Architechture and entire project workflow.
 ---
 
 ## Repository Structure
 
 ```
 ├── src/
-│   ├── api/              # FastAPI REST API               (Agent 2)
+│   ├── api/              # FastAPI REST API
 │   │   └── main.py
-│   ├── dashboard/        # Streamlit dashboard            (Agent 3)
+│   ├── dashboard/        # Streamlit dashboard
 │   │   ├── app.py
 │   │   └── api_client.py
-│   ├── mcp/              # MCP server for IBM Bob         (Agent 4)
+│   ├── mcp/              # MCP server for IBM Bob
 │   │   └── server.py
-│   ├── data/             # Data loading & generation      (Agent 1)
-│   ├── models/           # ML risk model                  (Agent 1)
-│   ├── services/         # Risk engine, readiness, explainability (Agent 1)
+│   ├── data/             # Data loading & generation
+│   ├── models/           # ML risk model
+│   ├── services/         # Risk engine, readiness, explainability
 │   └── utils/            # Config, exceptions
 ├── tests/
-│   ├── conftest.py
-│   ├── test_data_loader.py          # 5 tests  — Agent 1
-│   ├── test_risk_engine.py          # 9 tests  — Agent 1
-│   ├── test_maintenance_priority.py # 8 tests  — Agent 1
-│   ├── test_api.py                  # 11 tests — Agent 2
-│   ├── test_dashboard.py            # 16 tests — Agent 3
-│   └── test_mcp.py                  # 22 tests — Agent 4
+│   ├── test_data_loader.py          #  5 tests — data layer
+│   ├── test_risk_engine.py          #  9 tests — risk engine
+│   ├── test_maintenance_priority.py #  8 tests — priority
+│   ├── test_api.py                  # 11 tests — REST API
+│   ├── test_dashboard.py            # 16 tests — dashboard
+│   └── test_mcp.py                  # 22 tests — MCP tools
 ├── data/assets.csv        # Synthetic fleet dataset (100 assets)
 ├── docs/
 │   ├── architecture.md
-│   ├── mcp-integration.md # IBM Bob setup guide
+│   ├── mcp-integration.md
 │   ├── risk-engine.md
 │   └── setup-guide.md
 ├── run_mcp_server.py      # MCP server launcher (stdio transport)
@@ -134,12 +232,10 @@ Each agent layer calls the previous one without reimplementing its logic.
 ### Install dependencies
 
 ```powershell
-# From the repository root
 pip install -r requirements.txt
 ```
 
-> **Note:** `requirements.txt` pins exact versions. If you are on Python 3.14, pip will
-> automatically select compatible wheels (e.g. pandas 3.0.5 instead of 2.2.3).
+> **Note:** `requirements.txt` pins minimum versions. pip will automatically select compatible wheels for your Python version.
 
 ### Environment variables (optional)
 
@@ -190,11 +286,9 @@ python -m streamlit run src/dashboard/app.py
 
 Dashboard available at **http://localhost:8501**
 
-The dashboard connects to the FastAPI backend at `http://localhost:8000` by default.
-Override with the `MISSIONGUARD_API_URL` environment variable:
+Override the backend URL if needed:
 
 ```powershell
-# PowerShell
 $env:MISSIONGUARD_API_URL = "http://my-server:8000"
 python -m streamlit run src/dashboard/app.py
 ```
@@ -205,8 +299,8 @@ python -m streamlit run src/dashboard/app.py
 python run_mcp_server.py
 ```
 
-The server runs over stdio and is ready for IBM Bob to connect. See
-[docs/mcp-integration.md](docs/mcp-integration.md) for IBM Bob configuration details.
+The server runs over stdio and is ready for IBM Bob to connect.
+See [docs/mcp-integration.md](docs/mcp-integration.md) for IBM Bob configuration details.
 
 ### 5 — Run the test suite
 
@@ -214,7 +308,22 @@ The server runs over stdio and is ready for IBM Bob to connect. See
 python -m pytest -v
 ```
 
-Expected result: **71 tests passing** (verified on Python 3.14 / pytest 9.1.1).
+Expected result: **71 tests passing**.
+
+```
+tests/test_data_loader.py            5 passed
+tests/test_risk_engine.py            9 passed
+tests/test_maintenance_priority.py   8 passed
+tests/test_api.py                   11 passed
+tests/test_dashboard.py             16 passed
+tests/test_mcp.py                   22 passed
+──────────────────────────────────────────────
+71 passed in 3.69s
+```
+
+Non-fatal warnings (safe to ignore):
+- ~1901 sklearn `UserWarning` about feature names — informational, no effect on scores
+- 1 Starlette/AnyIO `DeprecationWarning` — benign
 
 ### 6 — (Optional) Run the risk engine directly
 
@@ -241,19 +350,10 @@ All 404 responses return `{"detail": "Asset {id} not found"}`.
 ### Example requests
 
 ```bash
-# Health check
 curl http://localhost:8000/health
-
-# All assets
 curl http://localhost:8000/assets
-
-# One asset — readiness
 curl http://localhost:8000/assets/A-001/status
-
-# One asset — risk analysis
 curl http://localhost:8000/assets/A-042/risk
-
-# One asset — maintenance priority
 curl http://localhost:8000/assets/A-017/priority
 ```
 
@@ -276,31 +376,9 @@ curl http://localhost:8000/assets/A-017/priority
 
 ---
 
-## Dashboard Overview
-
-The dashboard answers three questions at a glance:
-
-| Question | Where to look |
-|---|---|
-| Which assets are mission-ready? | KPI cards + Fleet Readiness bar |
-| Which need service first? | Maintenance Priority Queue (top 15) |
-| Why is this asset risky? | Asset Detail → risk factors + action |
-
-| Section | Description |
-|---|---|
-| **KPI cards** | Total assets, READY count, WARNING count, NOT_READY count, HIGH RISK count |
-| **Fleet Readiness** | Bar chart + counts and percentages by status |
-| **Risk Distribution** | Bar chart + LOW / MEDIUM / HIGH counts |
-| **Priority Queue** | Top 15 assets sorted by urgency |
-| **Asset Detail** | Health score, failure probability, risk factors, priority rank, recommended action |
-| **Sidebar** | Backend status, readiness filter, asset-type filter |
-
----
-
 ## MCP Tools (IBM Bob Integration)
 
-The MCP server exposes 5 tools. The server connects directly to the Agent 1 risk engine —
-it does not duplicate any scoring logic.
+The MCP server exposes 5 tools. It connects directly to the risk engine and does not duplicate any scoring logic.
 
 | Tool | Parameters | Description |
 |---|---|---|
@@ -338,29 +416,27 @@ it does not duplicate any scoring logic.
 
 ### IBM Bob configuration
 
-Add to your IBM Bob MCP configuration file:
+The workspace-scoped config is already committed at `.bob/mcp.json`. For reference:
 
 ```json
 {
   "mcpServers": {
-    "missionguard": {
+    "missionguard-mcp": {
       "command": "python",
       "args": ["run_mcp_server.py"],
-      "cwd": "/absolute/path/to/bob-ai-hackathon-missionguard"
+      "cwd": "${workspaceFolder}",
+      "alwaysAllow": [],
+      "disabled": false
     }
   }
 }
 ```
 
-Replace `cwd` with the actual absolute path on your machine.
-See [docs/mcp-integration.md](docs/mcp-integration.md) for full IBM Bob setup, HTTP transport,
-and watsonx configuration.
+See [docs/mcp-integration.md](docs/mcp-integration.md) for full IBM Bob setup, HTTP transport, and watsonx configuration.
 
 ---
 
 ## Fleet Statistics (verified from live system)
-
-These numbers come from the validated system with seed=42:
 
 | Metric | Value |
 |---|---|
@@ -380,11 +456,12 @@ These numbers come from the validated system with seed=42:
 - **Synthetic data only** — no real platform telemetry
 - **Logistic regression + heuristic blend** — not deep learning
 - **Labels are generated**, not observed failure rates
-- **~1900 sklearn feature-name warnings** — informational, not errors; safe to ignore
+- **~1901 sklearn feature-name warnings** — informational, not errors; safe to ignore
 - **Dashboard requires the FastAPI backend** to be running separately
 - **IBM Bob live connection** requires a separate IBM Bob installation and configuration
 - **No authentication** — suitable for demo, not production deployment
-- **No persistence** — model is re-fit from the CSV on each cold start (fast: <1 second)
+- **No persistence** — model is re-fit from the CSV on each cold start (fast: < 1 second)
+- **Local demo only** — no public deployment
 
 ---
 
@@ -395,12 +472,13 @@ These numbers come from the validated system with seed=42:
 - MCP server (`src/mcp/server.py`) with all 5 tools
 - stdio transport via `run_mcp_server.py`
 - Full test suite for all MCP tool logic (22 tests passing)
-- IBM Bob JSON configuration snippet (in `docs/mcp-integration.md`)
+- IBM Bob workspace config at `.bob/mcp.json`
+- IBM Bob MCP integration demonstrated locally
 
 ### Requires IBM Bob configuration
 
 - Installing IBM Bob on your machine
-- Adding MissionGuard to Bob's MCP server list
+- Opening this folder as a workspace in IBM Bob
 - Testing the natural-language conversation flow end-to-end
 
 ### Requires credentials or deployment setup
@@ -423,7 +501,7 @@ These numbers come from the validated system with seed=42:
 
 ## What We're Most Proud Of
 
-- **Clean layering:** each agent builds strictly on the previous one, no logic duplication
+- **Clean layering:** each component builds strictly on the previous one, no logic duplication
 - **Explainability by design:** every risk score is backed by human-readable factor phrases
 - **71 automated tests** covering data, ML, API, dashboard client, and MCP layers
 - **IBM Bob–ready MCP integration** with clear separation between what works locally and what needs Bob configuration

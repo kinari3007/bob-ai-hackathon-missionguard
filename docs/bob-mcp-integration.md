@@ -26,8 +26,9 @@ from prerequisites through live tool verification.
 |---|---|
 | **IBM Bob** | Installed and working; workspace folder support required |
 | **Python 3.11+** | `python --version` must return 3.11 or higher |
-| **mcp package** | `pip install "mcp[cli]>=2.0.0"` |
+| **mcp package** | Included in `requirements.txt` — `pip install "mcp[cli]>=2.0.0"` |
 | **MissionGuard dependencies** | `pip install -r requirements.txt` (run from repo root) |
+| **Dataset generated** | `python -m src.data.generate_dataset` |
 | **Repo cloned** | `git clone` or extracted to a local directory |
 
 Verify Python and mcp are installed from the repo root:
@@ -39,7 +40,7 @@ python -c "import importlib.metadata; print(importlib.metadata.version('mcp'))"
 
 Expected output: `Python 3.x.x` and `2.x.x` respectively.
 
-Verify the server starts cleanly (should return PASS):
+Verify the MCP server starts cleanly (should return PASS):
 
 ```powershell
 python test_server_start.py
@@ -66,24 +67,23 @@ The workspace-scoped MCP configuration lives at:
 <repo-root>/.bob/mcp.json
 ```
 
-This file is automatically read by IBM Bob when the workspace is opened. It overrides
-any global MCP settings for servers with the same name.
+This file is committed to the repository and is automatically read by IBM Bob when the
+workspace is opened. It registers the `missionguard-mcp` server without requiring manual
+configuration.
 
 ---
 
 ## 4. How the Configuration Works
 
-`.bob/mcp.json` contains a single server entry:
+`.bob/mcp.json` contains the following (already committed to the repo):
 
 ```json
 {
   "mcpServers": {
     "missionguard-mcp": {
-      "command": "C:\\Users\\Preneel\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
-      "args": [
-        "C:\\Users\\Preneel\\OneDrive\\Desktop\\Himay\\bob-ai-hackathon-missionguard\\run_mcp_server.py"
-      ],
-      "cwd": "C:\\Users\\Preneel\\OneDrive\\Desktop\\Himay\\bob-ai-hackathon-missionguard",
+      "command": "python",
+      "args": ["run_mcp_server.py"],
+      "cwd": "${workspaceFolder}",
       "alwaysAllow": [],
       "disabled": false
     }
@@ -95,20 +95,38 @@ any global MCP settings for servers with the same name.
 
 | Field | Purpose |
 |---|---|
-| `command` | Absolute path to the Python executable — **must be updated on each machine** |
-| `args` | Absolute path to the launcher script — **must be updated on each machine** |
-| `cwd` | Repo root — required so `import src.*` resolves correctly |
-| `alwaysAllow` | Empty: every tool call requires manual approval (recommended) |
+| `command` | `"python"` — uses the Python from your active environment / PATH |
+| `args` | Path to the launcher script, relative to `cwd` |
+| `cwd` | `"${workspaceFolder}"` — IBM Bob substitutes the actual workspace folder path |
+| `alwaysAllow` | Empty: every tool call requires manual approval in the IBM Bob UI (recommended during demos) |
 | `disabled` | `false` — server is active |
 
-### ⚠️ Porting to another machine
+### Portability
 
-IBM Bob does **not** expand `${workspaceFolder}` in `mcp.json`. When moving this project
-to a different machine or user account, update the three absolute paths:
+The configuration uses `${workspaceFolder}` so it works on any machine without manual editing,
+as long as the project folder is opened as a workspace in IBM Bob.
 
-1. `command` → output of `python -c "import sys; print(sys.executable)"`
-2. `args[0]` → full path to `run_mcp_server.py` in the cloned repo
-3. `cwd` → full path to the repo root
+> **If IBM Bob on your machine does not expand `${workspaceFolder}`**, update `cwd` manually:
+>
+> 1. Find your Python executable: `python -c "import sys; print(sys.executable)"`
+> 2. Find the absolute path to `run_mcp_server.py` in the cloned repo.
+> 3. Update `.bob/mcp.json` accordingly:
+>
+> ```json
+> {
+>   "mcpServers": {
+>     "missionguard-mcp": {
+>       "command": "C:\\path\\to\\python.exe",
+>       "args": ["C:\\path\\to\\bob-ai-hackathon-missionguard\\run_mcp_server.py"],
+>       "cwd": "C:\\path\\to\\bob-ai-hackathon-missionguard",
+>       "alwaysAllow": [],
+>       "disabled": false
+>     }
+>   }
+> }
+> ```
+>
+> Do **not** commit machine-specific absolute paths — use `${workspaceFolder}` wherever possible.
 
 ---
 
@@ -149,9 +167,6 @@ registers within 2–5 seconds.
 | `get_asset_maintenance` | Maintenance priority score, rank, and reasons for a specific asset |
 | `get_fleet_summary` | High-level fleet health summary and top-10 priority queue |
 
-> **Note on tool names:** The task specification mentioned `get_maintenance_priority`, but
-> the MCP tool is registered as **`get_asset_maintenance`** — this is the name Bob will display.
-
 ---
 
 ## 8. Approve or Disable Individual Tools
@@ -161,17 +176,16 @@ is empty). A confirmation dialog will appear with the tool name and arguments.
 
 - **Approve once** — approves this single call.
 - **Always allow** — adds the tool to `alwaysAllow` in `mcp.json` automatically.
-- **Disable a tool** — click the toggle next to the tool name in the MCP panel, or add its
-  name to `disabledTools` in `.bob/mcp.json`.
+- **Disable a tool** — click the toggle next to the tool name in the MCP panel.
 
-Keep manual approval enabled during the initial demonstration to clearly show each tool
-being invoked.
+Keeping manual approval enabled during the initial demonstration clearly shows each tool
+being invoked by IBM Bob.
 
 ---
 
 ## 9. Example Bob Prompts
 
-Paste any of these into the Bob chat to exercise the MCP tools:
+Paste any of these into the IBM Bob chat to exercise the MCP tools:
 
 ```
 Show me the current fleet summary.
@@ -184,9 +198,14 @@ Which assets have the highest failure risk?
 → Calls `list_assets` with `risk_filter="HIGH"`.
 
 ```
-Show me the readiness status of asset ASSET-001.
+Is asset A-017 mission-ready?
 ```
-→ Calls `get_asset_readiness` with `asset_id="ASSET-001"`.
+→ Calls `get_asset_readiness` with `asset_id="A-017"`.
+
+```
+Why is asset A-042 at high risk?
+```
+→ Calls `get_asset_failure_risk` with `asset_id="A-042"` — returns explainable risk factors.
 
 ```
 Which assets should receive maintenance first?
@@ -194,15 +213,17 @@ Which assets should receive maintenance first?
 → Calls `get_fleet_summary` (priority queue) or `list_assets` with `readiness_filter="NOT_READY"`.
 
 ```
-Explain why asset ASSET-001 has a high failure risk.
+List all non-mission-ready assets.
 ```
-→ Calls `get_asset_failure_risk` with `asset_id="ASSET-001"` — returns explainable risk factors.
+→ Calls `list_assets` with `readiness_filter="NOT_READY"`.
 
-```
-List all non-mission-ready assets and explain the reasons.
-```
-→ Calls `list_assets` with `readiness_filter="NOT_READY"`, then Bob may follow up with
-`get_asset_failure_risk` for each returned asset.
+### Architecture note
+
+IBM Bob is the **conversational interface** — it interprets natural language and decides
+which MCP tool to call. The MissionGuard backend (`src/services/risk_engine.py`) performs
+all structured risk analysis, readiness classification, and priority ranking. IBM Bob
+receives the structured result from the MCP tool and presents it as a natural-language
+response to the user.
 
 ---
 
@@ -215,17 +236,17 @@ List all non-mission-ready assets and explain the reasons.
 | Workspace folder open? | File → Open Folder; empty window = no MCP |
 | MCP toggle enabled? | MCP settings panel — "Use MCP Servers" must be ON |
 | JSON valid? | Run `python -c "import json; json.load(open('.bob/mcp.json'))"` |
-| Python path correct? | Run `"C:\path\to\python.exe" --version` in a terminal |
-| Script path correct? | Confirm `run_mcp_server.py` exists at the path in `args` |
+| Python on PATH? | Run `python --version` in a terminal |
+| Dependencies installed? | Run `pip install -r requirements.txt` |
 | Reload done? | Command Palette → Developer: Reload Window |
 
 ### Server appears but shows an error
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| `ModuleNotFoundError: src` | Wrong `cwd` | Set `cwd` to the repo root |
-| `ModuleNotFoundError: mcp` | mcp not installed for this Python | `python -m pip install "mcp[cli]>=2.0.0"` |
-| `No module named 'mcp.server.fastmcp'` | Using wrong `mcp` version | Ensure `mcp>=2.0.0` is installed |
+| `ModuleNotFoundError: src` | Wrong `cwd` | Open workspace folder correctly; or set `cwd` to the repo root |
+| `ModuleNotFoundError: mcp` | mcp not installed | `pip install "mcp[cli]>=2.0.0"` |
+| `No module named 'mcp.server'` | Old mcp version | Ensure `mcp>=2.0.0` is installed |
 | Protocol framing errors | stdout contaminated with logs | Verify nothing prints to stdout at import time |
 | Timeout on first call | ML model loading delay | Retry; the risk engine may take a moment on first load |
 
@@ -239,25 +260,26 @@ python test_server_start.py
 
 ### Check stderr for startup errors
 
-Bob does not surface the server's stderr in the UI. Run the server manually to see any
-startup errors:
+Bob does not surface the server's stderr in the UI. Run the server manually to see startup errors:
 
 ```powershell
 python run_mcp_server.py
 ```
-Send a line of JSON to stdin, e.g.:
+
+Send a line of JSON to stdin:
+
 ```
 {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"0.1"}}}
 ```
+
 A valid response starts with `{"jsonrpc":"2.0","id":1,"result":{...}}`.
 
 ### STDIO protocol note
 
-For STDIO MCP servers, **stdout is reserved for the MCP protocol**. Any normal logging
-must go to **stderr**. If any import or startup code prints to stdout, the protocol frame
-will be corrupted and Bob will report a parse error. Check `run_mcp_server.py` and all
-imports for stray `print()` calls.
+For STDIO MCP servers, **stdout is reserved for the MCP protocol**. Any logging must go to
+**stderr**. If any import or startup code prints to stdout, the protocol frame will be
+corrupted and Bob will report a parse error.
 
 ---
 
-*Last updated: Phase 5 integration — IBM Bob MCP server configured and validated.*
+*MCP protocol version: 2024-11-05 · Server name: MissionGuard AI · Transport: stdio*

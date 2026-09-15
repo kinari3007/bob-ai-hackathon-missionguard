@@ -82,29 +82,32 @@ Derived from risk/health, never from `asset_id`:
 
 Logistic coefficients × standardized feature values yield per-asset contributions. The largest **positive** contributions are mapped to phrases such as “High vibration level”. Output: up to three `top_risk_factors` plus a `recommended_action`.
 
-## Python API (for Agent 2)
+## Python API
 
-No HTTP in this phase. Import from the repo root (or `PYTHONPATH=.`):
+Import from the repo root:
 
 ```python
-from src.services.risk_engine import get_all_assets, get_asset_status, get_failure_risk
+from src.services.risk_engine import (
+    get_all_assets,
+    get_asset_status,
+    get_failure_risk,
+    get_maintenance_priority,
+)
 
-get_all_assets()
-get_asset_status("A-017")
-get_failure_risk("A-017")
+get_all_assets()                      # list of all 100 assets
+get_asset_status("A-017")            # readiness status + evidence
+get_failure_risk("A-017")            # failure probability + risk factors
+get_maintenance_priority("A-017")    # priority score + rank
 ```
 
-Unknown ids raise `src.utils.exceptions.AssetNotFoundError`.
+Unknown IDs raise `src.utils.exceptions.AssetNotFoundError`.
 
-Or construct `RiskEngine` with an explicit `AppConfig` in tests and services.
+Or construct `RiskEngine` directly with an explicit `AppConfig` in tests and services.
 
 ## How to run the risk engine
 
 ```powershell
-cd bob-ai-hackathon-missionguard
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
+pip install -r requirements.txt
 python -m src.data.generate_dataset
 python -m src
 ```
@@ -112,5 +115,7 @@ python -m src
 ## How to run tests
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest
+python -m pytest -v
 ```
+
+Expected: 71 tests passing. See `docs/setup-guide.md` for the full test breakdown.
