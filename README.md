@@ -13,8 +13,8 @@ It analyzes a synthetic fleet of assets and helps users answer three important q
 ---
 ## PPTX and Demo Video Links 
 
-Presentation pptx : https://drive.google.com/drive/folders/1k47kmVCYf-Ok2xbD65SVtHsEWrNxNK0I
-Demo Video : https://drive.google.com/file/d/1Yd2msGzGF2exqdGPfy2g7lWjSvw3m2kf/view?usp=drivesdk
+- Presentation pptx : https://drive.google.com/drive/folders/1k47kmVCYf-Ok2xbD65SVtHsEWrNxNK0I
+- Demo Video : https://drive.google.com/file/d/1Yd2msGzGF2exqdGPfy2g7lWjSvw3m2kf/view?usp=drivesdk
 
 ---
 
