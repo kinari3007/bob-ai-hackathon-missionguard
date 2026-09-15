@@ -12,7 +12,7 @@
 **Title:** MissionGuard AI
 **Subtitle:** Mission Readiness & Predictive Maintenance Copilot
 
-**Team:** [Your Team Name]
+**Team:** Team Nova
 **Track:** AI
 **Team Members:**
 - [Team Lead Name]

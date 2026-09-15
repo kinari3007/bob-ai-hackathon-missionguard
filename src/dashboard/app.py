@@ -316,7 +316,7 @@ def main() -> None:
 
     # ── Header ────────────────────────────────────────────────────────────────
     st.markdown("## 🛡️ MissionGuard AI")
-    st.markdown("**Mission Readiness & Predictive Maintenance Copilot** · IBM BoB AI Hackathon 2026")
+    st.markdown("**Mission Readiness & Predictive Maintenance Copilot** · Team Nova · IBM BoB AI Innovation Hackathon 2026")
     _disclaimer()
     st.divider()
 
@@ -443,7 +443,7 @@ def main() -> None:
     # ── Footer ────────────────────────────────────────────────────────────────
     st.divider()
     st.caption(
-        "MissionGuard AI · IBM BoB AI Innovation Hackathon 2026 · "
+        "MissionGuard AI · Team Nova · IBM BoB AI Innovation Hackathon 2026 · "
         "Prototype — synthetic data only · Not for operational use"
     )
 
