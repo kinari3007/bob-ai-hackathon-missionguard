@@ -11,6 +11,12 @@ It analyzes a synthetic fleet of assets and helps users answer three important q
 > **Disclaimer:** All telemetry data used by this project is synthetic and fictional. Risk probabilities are model estimates, not observed failure rates. This prototype is for demonstration and decision-support purposes only and must not be used for real military operations.
 
 ---
+## PPTX and Demo Video Links 
+
+Presentation pptx : https://drive.google.com/drive/folders/1k47kmVCYf-Ok2xbD65SVtHsEWrNxNK0I
+Demo Video : https://drive.google.com/file/d/1Yd2msGzGF2exqdGPfy2g7lWjSvw3m2kf/view?usp=drivesdk
+
+---
 
 ## Team
 
